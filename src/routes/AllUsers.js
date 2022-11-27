@@ -5,6 +5,7 @@ import useFetch from '../hooks/useFetch';
 import {fetchUsers} from '../redux/users/actions';
 import {selectUsers} from '../redux/users/selectors';
 export default function AllUsers() {
+    useFetch(fetchUsers());
     const navigate = useNavigate();
     const goToUser = useCallback(
         (id) => {
@@ -13,7 +14,6 @@ export default function AllUsers() {
         [navigate]
     );
     const users = useSelector(selectUsers);
-    useFetch(fetchUsers());
     return (
         <div className="p-3 border border-black w-fit">
             {users.map((user) => (

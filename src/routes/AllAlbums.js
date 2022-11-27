@@ -6,6 +6,7 @@ import {fetchAlbums} from '../redux/albums/actions';
 import {selectAlbums} from '../redux/albums/selectors';
 
 export default function AllAlbums() {
+    useFetch(fetchAlbums());
     const navigate = useNavigate();
     const goToAlbum = useCallback(
         (id) => {
@@ -13,7 +14,6 @@ export default function AllAlbums() {
         },
         [navigate]
     );
-    useFetch(fetchAlbums());
     const albums = useSelector(selectAlbums);
     return (
         <div className="p-3 border border-black w-fit">
