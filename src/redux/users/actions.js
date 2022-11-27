@@ -4,7 +4,7 @@ const getUsers = async () => {
     ).then((r) => r.json());
     return {users};
 };
-const getUsersViaID = async (id) => {
+const getUserViaID = async (id) => {
     const users = await fetch(
         `https://jsonplaceholder.typicode.com/users/${id}`
     ).then((r) => r.json());
@@ -23,7 +23,7 @@ export const fetchUsers = () => async (dispatch) => {
 export const fetchUserViaID = (id) => async (dispatch) => {
     dispatch({type: 'USERS/FETCH/START'});
     try {
-        const {users} = await getUsersViaID(id);
+        const {users} = await getUserViaID(id);
         dispatch({type: 'USERS/FETCH/SUCCESS', payload: users});
     } catch (e) {
         console.error(e);

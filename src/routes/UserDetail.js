@@ -4,7 +4,7 @@ import {useNavigate, useParams} from 'react-router-dom';
 import {selectUsers} from '../redux/users/selectors';
 import useFetch from '../hooks/useFetch';
 import {fetchUserViaID} from '../redux/users/actions';
-import {fetchAlbums, fetchAlbumsViaUserID} from '../redux/albums/actions';
+import {fetchAlbumsViaUserID} from '../redux/albums/actions';
 import {selectAlbums} from '../redux/albums/selectors';
 export default function UserDetail() {
     const {id} = useParams();
@@ -17,7 +17,6 @@ export default function UserDetail() {
         },
         [navigate]
     );
-
     const user = useSelector(selectUsers);
     const albums = useSelector(selectAlbums);
     return (

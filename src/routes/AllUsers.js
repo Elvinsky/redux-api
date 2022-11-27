@@ -5,8 +5,8 @@ import useFetch from '../hooks/useFetch';
 import {fetchUsers} from '../redux/users/actions';
 import {selectUsers} from '../redux/users/selectors';
 export default function AllUsers() {
-    useFetch(fetchUsers());
     const navigate = useNavigate();
+    useFetch(fetchUsers());
     const goToUser = useCallback(
         (id) => {
             return () => navigate(`/users/${id}`);

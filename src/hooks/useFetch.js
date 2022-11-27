@@ -4,5 +4,5 @@ export default function useFetch(arg) {
     const dispatch = useDispatch();
     useEffect(() => {
         dispatch(arg);
-    }, [arg, dispatch]);
+    }, []);
 }
