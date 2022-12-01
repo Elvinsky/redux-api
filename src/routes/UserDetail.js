@@ -1,24 +1,26 @@
 import {useCallback} from 'react';
 import {useSelector} from 'react-redux';
 import {useNavigate, useParams} from 'react-router-dom';
-import {selectUsers} from '../redux/users/selectors';
+import {selectUserViaID} from '../redux/users/selectors';
 import useFetch from '../hooks/useFetch';
-import {fetchUserViaID} from '../redux/users/actions';
-import {fetchAlbumsViaUserID} from '../redux/albums/actions';
-import {selectAlbums} from '../redux/albums/selectors';
+import {selectAlbumsViaUserID} from '../redux/albums/selectors';
+import {fetchUsers} from '../redux/users/actions';
+import {fetchAlbums} from '../redux/albums/actions';
 export default function UserDetail() {
     const {id} = useParams();
-    useFetch(fetchUserViaID(id));
-    useFetch(fetchAlbumsViaUserID(id));
     const navigate = useNavigate();
+    const user = useSelector((store) => selectUserViaID(store, +id));
+    useFetch(fetchUsers());
+    useFetch(fetchAlbums());
     const goToAlbum = useCallback(
         (id) => {
             return () => navigate(`/albums/${id}`);
         },
         [navigate]
     );
-    const user = useSelector(selectUsers);
-    const albums = useSelector(selectAlbums);
+    const userAlbums = useSelector((store) =>
+        selectAlbumsViaUserID(store, +id)
+    );
     return (
         <div className="p-3 border border-black w-fit">
             <div className=" border-b border-neutral-500 border-dashed">
@@ -35,11 +37,12 @@ export default function UserDetail() {
                     {user.email}
                 </div>
             </div>
-            {albums.map((alb) => {
+            {userAlbums.map((alb) => {
                 return (
                     <div
                         onClick={goToAlbum(alb.id)}
                         className="text-sky-600 hover:text-red-400 cursor-pointer"
+                        key={alb.id}
                     >
                         {alb.title}
                     </div>

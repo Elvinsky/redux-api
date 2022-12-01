@@ -2,19 +2,26 @@ import {useCallback} from 'react';
 import {useSelector} from 'react-redux';
 import {useNavigate, useParams} from 'react-router-dom';
 import useFetch from '../hooks/useFetch';
-import {fetchAlbumsViaID, fetchPhotos} from '../redux/albums/actions';
-import {selectAlbums, selectPhotos} from '../redux/albums/selectors';
-import {selectUsers} from '../redux/users/selectors';
+import {fetchAlbums, fetchPhotos} from '../redux/albums/actions';
+import {
+    selectAlbumViaID,
+    selectPhotos,
+    selectPhotosViaAlbumID,
+} from '../redux/albums/selectors';
+import {fetchUsers} from '../redux/users/actions';
+import {selectUserViaAlbumID, selectUserViaID} from '../redux/users/selectors';
 
 export default function UserDetail() {
     const {id} = useParams();
-    useFetch(fetchAlbumsViaID(id));
-    const album = useSelector(selectAlbums);
-    const user = useSelector(selectUsers);
-    useFetch(fetchPhotos(id));
-    const photos = useSelector(selectPhotos);
+    useFetch(fetchPhotos());
+    useFetch(fetchAlbums());
+    useFetch(fetchUsers());
+    const photos = useSelector((store) => selectPhotosViaAlbumID(store, +id));
+    const album = useSelector((store) => selectAlbumViaID(store, +id));
+    const uid = album.userId;
+    const user = useSelector((store) => selectUserViaID(store, +uid));
+
     const navigate = useNavigate();
-    console.log(album, user);
     const goToUser = useCallback(
         (id) => {
             return () => navigate(`/users/${id}`);
@@ -45,7 +52,7 @@ export default function UserDetail() {
                     <div className="grid grid-cols-5 gap-4 mt-4">
                         {photos.map((photo) => {
                             return (
-                                <div>
+                                <div key={photo.id}>
                                     <img
                                         src={photo.thumbnailUrl}
                                         alt="placeholder"

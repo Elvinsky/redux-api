@@ -1,4 +1,5 @@
 // import {composeWithDevTools} from '@redux-devtools/extension/lib/types/logOnly';
+import {composeWithDevTools} from '@redux-devtools/extension';
 import {applyMiddleware, combineReducers, createStore} from 'redux';
 import thunk from 'redux-thunk';
 import {albumReducer} from './albums/albumReducer';
@@ -8,6 +9,6 @@ const store = createStore(
         users: userReducer,
         albums: albumReducer,
     }),
-    applyMiddleware(thunk)
+    composeWithDevTools(applyMiddleware(thunk))
 );
 export default store;
