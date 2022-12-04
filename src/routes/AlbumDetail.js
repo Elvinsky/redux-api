@@ -1,15 +1,15 @@
 import {useCallback} from 'react';
 import {useSelector} from 'react-redux';
 import {useNavigate, useParams} from 'react-router-dom';
+import {getAlbums} from '../api';
 import useFetch from '../hooks/useFetch';
 import {fetchAlbums, fetchPhotos} from '../redux/albums/actions';
 import {
     selectAlbumViaID,
-    selectPhotos,
     selectPhotosViaAlbumID,
 } from '../redux/albums/selectors';
 import {fetchUsers} from '../redux/users/actions';
-import {selectUserViaAlbumID, selectUserViaID} from '../redux/users/selectors';
+import {selectUserViaID} from '../redux/users/selectors';
 
 export default function UserDetail() {
     const {id} = useParams();
@@ -18,9 +18,7 @@ export default function UserDetail() {
     useFetch(fetchUsers());
     const photos = useSelector((store) => selectPhotosViaAlbumID(store, +id));
     const album = useSelector((store) => selectAlbumViaID(store, +id));
-    const uid = album.userId;
-    const user = useSelector((store) => selectUserViaID(store, +uid));
-
+    const user = useSelector((store) => selectUserViaID(store, +album.userId));
     const navigate = useNavigate();
     const goToUser = useCallback(
         (id) => {
@@ -28,41 +26,39 @@ export default function UserDetail() {
         },
         [navigate]
     );
-    if (!photos || !user || !album) {
-        return <div>Loading...</div>;
-    } else {
-        return (
-            <div className="p-3 border border-black w-fit">
-                <div>
-                    <span className="text-lg font-semibold">Title:</span>
-                    {album.title}
-                </div>
-                <div
-                    key={user.id}
-                    onClick={goToUser(user.id)}
-                    className="text-sky-600 hover:text-red-400 cursor-pointer"
-                >
-                    <span className="text-lg font-semibold text-black">
-                        Creator:
-                    </span>
-                    {user.name}
-                </div>
+    if (!user || !album || !photos) return <div>Loading...</div>;
 
-                {
-                    <div className="grid grid-cols-5 gap-4 mt-4">
-                        {photos.map((photo) => {
-                            return (
-                                <div key={photo.id}>
-                                    <img
-                                        src={photo.thumbnailUrl}
-                                        alt="placeholder"
-                                    />
-                                </div>
-                            );
-                        })}
-                    </div>
-                }
+    return (
+        <div className="p-3 border border-black w-fit">
+            <div>
+                <span className="text-lg font-semibold">Title:</span>
+                {album.title}
             </div>
-        );
-    }
+            <div
+                key={user.id}
+                onClick={goToUser(user.id)}
+                className="text-sky-600 hover:text-red-400 cursor-pointer"
+            >
+                <span className="text-lg font-semibold text-black">
+                    Creator:
+                </span>
+                {user.name}
+            </div>
+
+            {
+                <div className="grid grid-cols-5 gap-4 mt-4">
+                    {photos.map((photo) => {
+                        return (
+                            <div key={photo.id}>
+                                <img
+                                    src={photo.thumbnailUrl}
+                                    alt="placeholder"
+                                />
+                            </div>
+                        );
+                    })}
+                </div>
+            }
+        </div>
+    );
 }

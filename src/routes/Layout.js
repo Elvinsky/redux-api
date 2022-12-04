@@ -3,9 +3,9 @@ import {Outlet, NavLink, useNavigate} from 'react-router-dom';
 import './Layout.css';
 export default function Layout() {
     const navigate = useNavigate();
-    useEffect(() => {
-        navigate('/users');
-    }, []);
+    // useEffect(() => {
+    //     navigate('/users');
+    // }, []);
     return (
         <div className="m-2 ml-5">
             <header className="flex gap-5 font-semibold mb-5">

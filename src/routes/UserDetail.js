@@ -21,6 +21,7 @@ export default function UserDetail() {
     const userAlbums = useSelector((store) =>
         selectAlbumsViaUserID(store, +id)
     );
+    if (!user) return <div>Loading...</div>;
     return (
         <div className="p-3 border border-black w-fit">
             <div className=" border-b border-neutral-500 border-dashed">
@@ -37,6 +38,7 @@ export default function UserDetail() {
                     {user.email}
                 </div>
             </div>
+
             {userAlbums.map((alb) => {
                 return (
                     <div
