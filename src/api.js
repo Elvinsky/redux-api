@@ -1,4 +1,5 @@
 const API_URL = 'https://jsonplaceholder.typicode.com/';
+
 export const getAlbums = async () => {
     const albums = await fetch(API_URL + 'albums').then((r) => r.json());
     return {albums};

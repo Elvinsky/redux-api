@@ -9,8 +9,8 @@ export default function AllAlbums() {
     useFetch(fetchAlbums());
     const navigate = useNavigate();
     const goToAlbum = useCallback(
-        (id) => {
-            return () => navigate(`/albums/${id}`);
+        (id, userId) => {
+            return () => navigate(`/albums/${id}/${userId}`);
         },
         [navigate]
     );
@@ -20,7 +20,7 @@ export default function AllAlbums() {
             {albums.map((album) => (
                 <div
                     key={album.id}
-                    onClick={goToAlbum(album.id)}
+                    onClick={goToAlbum(album.id, album.userId)}
                     className="text-lg border-b border-neutral-500 border-dashed hover:text-red-400	cursor-pointer	"
                 >
                     {album.title}

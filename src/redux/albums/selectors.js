@@ -1,4 +1,6 @@
 export const selectAlbums = (store) => store.albums.albums;
+export const selectAlbumsLoading = (store) => store.albums.loading;
+export const selectAlbumsError = (store) => store.albums.error;
 export const selectPhotos = (store) => store.albums.photos;
 export const selectAlbumsViaUserID = (store, id) =>
     store.albums.albums.filter((album) => album.userId === id);
