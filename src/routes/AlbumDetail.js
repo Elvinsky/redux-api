@@ -27,13 +27,11 @@ export default function UserDetail() {
         },
         [navigate]
     );
-    const validation = () => {
-        if (!userLoading && !user) navigate('/error');
-        if (!albumLoading && !album) navigate('/error');
-        if (userLoading || !user) return <div>Loading...</div>;
-        if (albumLoading || !album) return <div>Loading...</div>;
-    };
-    validation();
+    if (!userLoading && !user) navigate('/error');
+    if (userLoading || !user) return <div>Loading...</div>;
+    if (!albumLoading && !album) navigate('/error');
+    if (albumLoading || !album) return <div>Loading...</div>;
+
     return (
         <div className="p-3 border border-black w-fit">
             <div>
